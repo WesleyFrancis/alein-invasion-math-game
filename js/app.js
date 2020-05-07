@@ -1,11 +1,31 @@
 //----------------import stuff--------------
-import MainScrn from "./UIO/mainScreen.js";
+import StartScreen from "./UIO/startScreen.js";
 import playerData from "./DAO/playerData.js"
 
-    const startScrn=new MainScrn();
-    const plyrDta=new playerData();
-    function main()
+    
+
+const app=
+{
+    startscrn: document.querySelector("#startBody"),
+    mainscrns: document.querySelector("#MainMenu"),
+
+    init()
     {
+        if(this.startscrn!=null)
+        {
+            this.startScreen();
+        }
+        else if(this.mainscrns!=null)
+        {
+            this.mainManu();
+        }
+    },
+
+    startScreen()
+    {
+        const startScrn=new StartScreen();
+        const plyrDta=new playerData();
+       // const mainScreen= new MainMenu();
         
         startScrn.updateBackground();
 
@@ -19,11 +39,19 @@ import playerData from "./DAO/playerData.js"
             }
             else
             {
-                alert("enter something"); // to be replaced with message class
+                alert("enter something"); // to be replaced with message class and dymamic messages
             }
         });
+
+    },
+    mainManu()
+    {
+        document.addEventListener("DOMContentLoaded",()=>{
+            
+            console.log( `Hello  ${localStorage.getItem("playerName")}`);
+        });
     }
+    
+}
 
-
-
-main();
+app.init();
