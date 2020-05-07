@@ -6,9 +6,10 @@
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 body{
-    background-image: url("../images/milkeyway Background.jpg");
-    background-size: cover;
+    background-image: url("../images/seemlessGalexy.jpg");
+    
     background-position: 0px 0px;
+    font-size: 2em;
 }
 :root{
     --actionColor:#47699f;
@@ -23,11 +24,13 @@ body{
 #modal{
     margin-top: 1vh;
     min-height: 20vh;
-    border: 1px solid green;
+    /* border: 1px solid green; */
+    margin-top: 10em;
 }
 #modal > label{
     color:#fff;
     font-weight: 600;
+    transition: opacity 0 1s;
 }
 #modal > input{
     width: 100vh;
@@ -37,13 +40,23 @@ body{
     border-style: solid;
     border:2px solid #888;
     padding:10px;
-
+    margin-top: 2em;
+    padding: 20px;
+    font-size: 1em;
+    color:#666;
+    text-transform: uppercase;
 }
 .action{
     color:#fff;
     padding:10px 15px;
     border:none;
     border-radius: 5px;
-
+    margin-top: 1em;
     background-color: var(--actionColor);
+    transition: padding 1s;
+}
+.action:hover{
+    cursor: pointer;
+    padding: 12px 25px;
+    transition: padding 1s;
 }
