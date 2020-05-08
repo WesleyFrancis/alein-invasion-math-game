@@ -29,20 +29,29 @@ const level={
       //  console.log(this.playingField.children[0]);
         
             let move=0;
+            for(let i=0;i<this.playingField.children.length;i++)
+            {
+                const timer=  setInterval(() => {
+                    move+=1;
+                    const d=this.playingField.children[i].style.marginTop=`${move}px`;
+                
+    
+                    if(move>=600)
+                    {
+                        clearInterval(timer);
+                    }
+                }, 100);
+            }
+        //   const timer=  setInterval(() => {
+        //         move+=5;
+        //         const d=this.playingField.children[2].style.marginTop=`${move}px`;
             
-          const timer=  setInterval(() => {
-                move+=5;
-               // console.log(this.playingField.children[0].style.marginTop=move);
-                const d=this.playingField.children[2].style.marginTop=`${move}px`;
-               // console.log(d);
 
-                if(move==600)
-                {
-                    clearInterval(timer);
-                }
-            }, 100);
-            
-            
+        //         if(move==600)
+        //         {
+        //             clearInterval(timer);
+        //         }
+        //     }, 100);
     }
 
 }
