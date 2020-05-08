@@ -1,0 +1,24 @@
+.container{
+    color:#fff;
+    display: grid;
+    grid-template-rows: 70% 30%;
+    min-height: 90vh;
+}
+#enime{
+    display: grid;
+   
+}
+.allien{
+    background-image: url("../images/alien.png");
+    background-size: cover;
+    width:200px;
+    height: 200px;
+}
+.allien > h6{
+    text-align: center;
+    margin-top: 140px;
+    font-size: 1em;
+}
+#cannon{
+    align-self: end;
+}
