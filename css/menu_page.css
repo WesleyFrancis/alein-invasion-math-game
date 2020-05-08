@@ -1,0 +1,63 @@
+@font-face {
+    font-family: 'AlienFont';
+    src: url('../fonts/yoshisst.ttf')  format('truetype'); 
+    /* src: url('webfont.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         /* url('webfont.woff2') format('woff2'), Super Modern Browsers */
+         /* url('webfont.woff') format('woff'), Pretty Modern Browsers */
+         /* url('../fonts/yoshisst.ttf')  format('truetype'), Safari, Android, iOS */
+         /* url('webfont.svg#svgFontName') format('svg'); Legacy iOS */ */
+  }
+.container h1{
+    color: #fff;
+    margin-top: 1em;
+    font-family: 'AlienFont', Fallback, sans-serif;
+    background: -webkit-linear-gradient(#86C6AB, #B9ED81);
+    background-clip: border-box;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+}
+#allien
+{
+    -webkit-animation: scale-in-center 3s cubic-bezier(0.250, 0.460, 0.450, 0.940)  infinite both;
+	animation: scale-in-center 3s cubic-bezier(0.250, 0.460, 0.450, 0.940)  infinite both;
+}
+#MainMenu{
+    display:grid;
+    grid-template-rows: 1fr 1fr;
+    
+}
+#MainMenu main{
+    
+}
+#MainMenu > section{
+    
+    justify-self: center;
+   
+}
+section{
+    text-decoration: none;
+    color: #fff;
+    line-height: 50px;
+    text-align: center;
+}
+
+@-webkit-keyframes scale-in-center {
+    0% {
+        -webkit-transform: translateY(0px);
+        transform: translateY(0px);
+        opacity: 1;
+    }
+    50%{
+        -webkit-transform: translateY(50px);
+        transform: translateY(50px);
+        opacity: 1;
+    }
+    100% {
+        -webkit-transform: translateY(0px);
+        transform: translateY(0px);
+        opacity: 1;
+    }
+  }
+
+  

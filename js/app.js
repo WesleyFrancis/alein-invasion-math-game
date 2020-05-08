@@ -1,8 +1,9 @@
 //----------------import stuff--------------
 import StartScreen from "./UIO/startScreen.js";
-import playerData from "./DAO/playerData.js"
+import Background from "./UIO/background.js";
+import playerData from "./DAO/playerData.js";
+import Menu from "./UIO/menu.js";
 
-    
 
 const app=
 {
@@ -25,9 +26,10 @@ const app=
     {
         const startScrn=new StartScreen();
         const plyrDta=new playerData();
+        const Galexyf = new Background();
+
        // const mainScreen= new MainMenu();
-        
-        startScrn.updateBackground();
+       Galexyf.updateBackground()
 
         startScrn.nextButton.addEventListener("click",()=>{
             //load next page
@@ -46,11 +48,17 @@ const app=
     },
     mainManu()
     {
-        document.addEventListener("DOMContentLoaded",()=>{
-            
-            console.log( `Hello  ${localStorage.getItem("playerName")}`);
-        });
+        
+        const Galexyf = new Background();
+        Menu.setName(`Hi ${localStorage.getItem("playerName")}`);
+       Galexyf.updateBackground();
+       console.log(Menu.playBtn);
+       Menu.playBtn.addEventListener("click",()=>{
+        window.location="../html/gameMap.html";
+       });
+
     }
+
     
 }
 
