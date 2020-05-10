@@ -13,14 +13,7 @@ class Enime{
         this.isAlive=true;
     }
 
-    spawnAlien(){
-        const allien=document.createElement("div");
-            allien.setAttribute("class","allien");
-        const NumberCanon=document.createElement("h6");
-        NumberCanon.innerHTML=this.number;
-        allien.appendChild(NumberCanon);
-        return allien;
-    }
+
 
 }
 export default Enime

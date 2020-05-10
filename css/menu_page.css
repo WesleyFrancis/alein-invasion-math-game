@@ -7,12 +7,14 @@
          /* url('../fonts/yoshisst.ttf')  format('truetype'), Safari, Android, iOS */
          /* url('webfont.svg#svgFontName') format('svg'); Legacy iOS */ */
   }
+  *{
+    background-clip: border-box;
+  }
 .container h1{
     color: #fff;
     margin-top: 1em;
     font-family: 'AlienFont', Fallback, sans-serif;
     background: -webkit-linear-gradient(#86C6AB, #B9ED81);
-    background-clip: border-box;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 
@@ -24,8 +26,7 @@
 }
 #MainMenu{
     display:grid;
-    grid-template-rows: 1fr 1fr;
-    
+    grid-template-rows:1fr;
 }
 #MainMenu main{
     
@@ -41,7 +42,23 @@ section{
     line-height: 50px;
     text-align: center;
 }
-
+@keyframes alien-hover {
+    0% {
+        -webkit-transform: translateY(0px);
+        transform: translateY(0px);
+        opacity: 1;
+    }
+    50%{
+        -webkit-transform: translateY(50px);
+        transform: translateY(50px);
+        opacity: 1;
+    }
+    100% {
+        -webkit-transform: translateY(0px);
+        transform: translateY(0px);
+        opacity: 1;
+    }
+  }
 @-webkit-keyframes alien-hover {
     0% {
         -webkit-transform: translateY(0px);
@@ -59,5 +76,4 @@ section{
         opacity: 1;
     }
   }
-
   

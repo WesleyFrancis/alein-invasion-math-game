@@ -1,18 +1,40 @@
+*{
+    padding:0px;
+}
 .container{
     color:#fff;
     display: grid;
-    grid-template-rows: 70% 30%;
-    min-height: 90vh;
+    grid-template-rows:1fr auto;
+    justify-items: center;
+    min-height: 100%;
 }
 #enime{
     display: grid;
-   
+   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+   width: max-content;
 }
+.allien{
+    /* background-image: url("../images/alien.png"); */
+    /* background-size: contain; */
+    /* background-repeat: no-repeat; */
+   background-color: greenyellow;
+    width:100px;
+    height: 100px;
+}
+#cannon{
+    position: absolute;
+    margin:0px auto;
+    bottom: 0px;
+    background-color: hotpink;
+    width: 100px;
+    height:100px;
+    
+} 
 .allien{
     background-image: url("../images/alien.png");
     background-size: cover;
-    width:200px;
-    height: 200px;
+    background-repeat: no-repeat;
+
 }
 .allien > h6{
     text-align: center;

@@ -1,10 +1,10 @@
 //----------------import stuff--------------
-import StartScreen from "./UIO/startScreen.js";
-import Background from "./UIO/background.js";
+import StartScreenUI from "./UIO/startScreen.js";
+import BackgroundUI from "./UIO/background.js";
 import playerData from "./DAO/playerData.js";
-import gameLevel from "./UIO/gameLevel.js";
-import Menu from "./UIO/menu.js";
-
+import gameMapUI from "./UIO/gameMap.js";
+import MenuUI from "./UIO/menu.js";
+import GameInstance from "./BIO/gameInstance.js";
 
 const app=
 {
@@ -20,28 +20,56 @@ const app=
         }
         else if(this.mainscrns!=null)
         {
-            this.mainManu();
+            this.mainMenu();
         }
         else if(this.gameMap!=null)
         {
-            this.gameMap();
+            this.gameMapr();
         }
         //update background regardless of webpage
-        const Galexyf = new Background();
-        Galexyf.updateBackground();
-    },
+            let index=1;
+            setInterval((e) => {
+               BackgroundUI.updateBackground(index);
 
+                index++;
+                if(index>=1920)
+                {
+                    index=0;
+                }
+            }, 100);
+       document.addEventListener("DOMContentLoaded",()=>{
+        BackgroundUI.createAudio();
+        BackgroundUI.updateAudio(GameInstance.isAudioPlaying);//global state of the game information -> gameState.audio
+     
+       });
+       BackgroundUI.mute.addEventListener("click",()=>{
+            BackgroundUI.toggleAudio();
+        });
+        document.addEventListener("keydown",(e)=>{
+            if(e.key=="ArrowRight")
+            {
+                GameInstance.cannonLocation+=10;
+                gameMapUI.moveCannon(GameInstance.cannonLocation);
+            }
+            if(e.key=="ArrowLeft")
+            {
+                GameInstance.cannonLocation-=10;
+                gameMapUI.moveCannon(GameInstance.cannonLocation);
+            }
+        });
+    },
+    getRandomInt(max) {
+        return Math.floor(Math.random() * Math.floor(max));
+      },
     startScreen()
     {
-        const startScrn=new StartScreen();
         const plyrDta=new playerData();
-        
-            startScrn.nextButton.addEventListener("click",()=>{
+        StartScreenUI.nextButton.addEventListener("click",()=>{
             //load next page
             //save player info to player class and session
-            if(startScrn.userName.value!='')
+            if(StartScreenUI.userName.value!='')
             {
-                plyrDta.savePlayer(startScrn.userName.value);
+                plyrDta.savePlayer(StartScreenUI.userName.value);
                 window.location ="html/menu.html";
             }
             else
@@ -49,31 +77,40 @@ const app=
                 alert("enter something"); // to be replaced with message class and dymamic messages
             }
         });
-
     },
-    mainManu()
+    mainMenu()
     {
         
-        const Galexyf = new Background();
-        Menu.setName(`Hi ${localStorage.getItem("playerName")}`);
-        Galexyf.updateBackground();
-        console.log(Menu.playBtn);
-        Menu.playBtn.addEventListener("click",()=>{
-        window.location="../html/gameMap.html";
+        MenuUI.setName(`Hi ${localStorage.getItem("playerName")}`);
+        MenuUI.playBtn.addEventListener("click",()=>{
+            window.location="../html/gameMap.html";
        });
 
     },
-    gameMap()
+    gameMapr()
     {
-        gameLevel.startGame();
+
+            let move=0;
+            const timer=  setInterval(() => {
+                gameMapUI.moveEnimies(move,0);
+                gameMapUI.moveEnimies(move*.3,1);
+                gameMapUI.moveEnimies(move,2);
+                gameMapUI.moveEnimies(move*.1,3);
+                gameMapUI.moveEnimies(move*.5,4);
+                move++;
+                if(move>=window.innerHeight-300)//client y=spacecraft pix+cannonsize
+                {
+                    clearInterval(timer);
+                }
+            }, 100);
+            
         //pause game
         //move cannon
         //read rules
         //exit
         
     }
-
-    
+  
 }
 
 app.init();
