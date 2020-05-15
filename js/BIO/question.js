@@ -8,7 +8,7 @@ class Question{
     
     createQuestion()
     {
-
+        
     }
 }
 export default Question

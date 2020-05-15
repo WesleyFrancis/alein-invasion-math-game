@@ -1,4 +1,4 @@
-//----------------import stuff--------------
+// param myParam----------------import stuff--------------
 import StartScreenUI from "./UIO/startScreen.js";
 import BackgroundUI from "./UIO/background.js";
 import playerData from "./DAO/playerData.js";
@@ -32,7 +32,7 @@ const app=
                BackgroundUI.updateBackground(index);
 
                 index++;
-                if(index>=1920)
+                if(index>=708)//708 width f ackground image to fake looping
                 {
                     index=0;
                 }
@@ -48,12 +48,12 @@ const app=
         document.addEventListener("keydown",(e)=>{
             if(e.key=="ArrowRight")
             {
-                GameInstance.cannonLocation+=10;
+                GameInstance.cannonLocation+=20;
                 gameMapUI.moveCannon(GameInstance.cannonLocation);
             }
             if(e.key=="ArrowLeft")
             {
-                GameInstance.cannonLocation-=10;
+                GameInstance.cannonLocation-=20;
                 gameMapUI.moveCannon(GameInstance.cannonLocation);
             }
         });
@@ -93,12 +93,12 @@ const app=
             let move=0;
             const timer=  setInterval(() => {
                 gameMapUI.moveEnimies(move,0);
-                gameMapUI.moveEnimies(move*.3,1);
+                gameMapUI.moveEnimies(move,1);
                 gameMapUI.moveEnimies(move,2);
-                gameMapUI.moveEnimies(move*.1,3);
-                gameMapUI.moveEnimies(move*.5,4);
+                gameMapUI.moveEnimies(move,3);
+                gameMapUI.moveEnimies(move,4);
                 move++;
-                if(move>=window.innerHeight-300)//client y=spacecraft pix+cannonsize
+                if(move>=window.innerHeight-350)//client y=spacecraft pix+cannonsize
                 {
                     clearInterval(timer);
                 }

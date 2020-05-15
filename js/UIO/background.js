@@ -6,7 +6,7 @@ const background={
 
    updateBackground(index)
    {
-    this.background.style.backgroundPosition=`${index-.2}px ${index+1}px`;
+    this.background.style.backgroundPosition=`${index-1}px ${index+1}px`;
    },
    updateAudio(isplaying)
    {
