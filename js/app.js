@@ -40,27 +40,49 @@ const app=
        document.addEventListener("DOMContentLoaded",()=>{
         BackgroundUI.createAudio();
         BackgroundUI.updateAudio(GameInstance.isAudioPlaying);//global state of the game information -> gameState.audio
-     
+        this.resizeComponents();
+
        });
        BackgroundUI.mute.addEventListener("click",()=>{
             BackgroundUI.toggleAudio();
         });
         document.addEventListener("keydown",(e)=>{
+            //* Move the cannon to the left and right using arrows and a touch type interface for mobile
+            // todo implement a way to detect touch on mobile to move the cannon left and right
+
+                const cannonDistanceFromLeft=this.convertPX(gameMapUI.cannon.style.marginLeft);
+                const cannonTravelDistance=gameMapUI.cannon.offsetWidth;
+                const gameScreenSize=gameMapUI.gameContainer.offsetWidth;
             if(e.key=="ArrowRight")
             {
-                GameInstance.cannonLocation+=20;
-                gameMapUI.moveCannon(GameInstance.cannonLocation);
+                if(cannonDistanceFromLeft<=gameScreenSize-cannonTravelDistance-15)
+                {
+                    GameInstance.cannonLocation+=15;
+                    gameMapUI.moveCannon(GameInstance.cannonLocation);
+                }
             }
             if(e.key=="ArrowLeft")
             {
-                GameInstance.cannonLocation-=20;
-                gameMapUI.moveCannon(GameInstance.cannonLocation);
+                if(this.convertPX(gameMapUI.cannon.style.marginLeft)>=0)
+                {
+                    GameInstance.cannonLocation-=15;
+                    gameMapUI.moveCannon(GameInstance.cannonLocation);
+                }
+                
             }
+        });
+        
+        window.addEventListener('resize',()=>{
+            this.resizeComponents();
         });
     },
     getRandomInt(max) {
         return Math.floor(Math.random() * Math.floor(max));
       },
+    convertPX(pixels)
+    {
+        return pixels.slice(0,-2);///substring(0, distance.length-2); //gameMapUI.cannon.style.marginLeft; //! remove the px character
+    },
     startScreen()
     {
         const plyrDta=new playerData();
@@ -109,6 +131,18 @@ const app=
         //read rules
         //exit
         
+    },
+    resizeComponents()
+    {
+        // !fetch the size of the screen and dynamicaly update the size of the image for the allien
+        const containerWIdth=gameMapUI.gameContainer.clientWidth;
+        const allienSize=containerWIdth/5-10;
+        gameMapUI.allien.forEach((rr)=>{
+            rr.style.width=`${allienSize}px`;
+            rr.style.height=`${allienSize}px`;
+        },);
+        gameMapUI.cannon.style.width=`${allienSize*1.2}px`;
+        gameMapUI.cannon.style.height=`${allienSize*1.2}px`;
     }
   
 }

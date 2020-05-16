@@ -2,8 +2,10 @@ import Alien from "../BIO/alien.js";
 import GameInstance from "../BIO/gameInstance.js";
 
 const level={
+    gameContainer:document.querySelector(".container"),
     playingField:document.querySelector("#enime"),
     cannon:document.querySelector("#cannon"),
+    allien:document.querySelectorAll(".allien"),
 
     startGame()//create emimies
     {

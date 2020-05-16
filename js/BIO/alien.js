@@ -1,3 +1,5 @@
+//TODO : use this class to keep the properties of each individual space ship
+//TODO : it 
 class Enime{
     size;//number -> dimention of the allien (based on screen size)
     number;//number -> assigned
@@ -12,8 +14,6 @@ class Enime{
         this.speed=speed;
         this.isAlive=true;
     }
-
-
 
 }
 export default Enime
