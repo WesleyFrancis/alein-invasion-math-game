@@ -5,7 +5,7 @@ import playerData from "./DAO/playerData.js";
 import gameMapUI from "./UIO/gameMap.js";
 import MenuUI from "./UIO/menu.js";
 import GameInstance from "./BIO/gameInstance.js";
-
+import bullet from "./BIO/bullet.js";
 const app=
 {
     startscrn: document.querySelector("#startBody"),
@@ -74,9 +74,11 @@ const app=
         
         window.addEventListener('resize',()=>{
             this.resizeComponents();
+
         });
     },
-    getRandomInt(max) {
+
+    getRandomInt(max){
         return Math.floor(Math.random() * Math.floor(max));
       },
     convertPX(pixels)
@@ -102,7 +104,6 @@ const app=
     },
     mainMenu()
     {
-        
         MenuUI.setName(`Hi ${localStorage.getItem("playerName")}`);
         MenuUI.playBtn.addEventListener("click",()=>{
             window.location="../html/gameMap.html";
@@ -120,12 +121,26 @@ const app=
                 gameMapUI.moveEnimies(move,3);
                 gameMapUI.moveEnimies(move,4);
                 move++;
-                if(move>=window.innerHeight-350)//client y=spacecraft pix+cannonsize
+                
+            // console.log(`${gameMapUI.allien[0].getBoundingClientRect().y}`);
+            // todo track the distance from the bottom of the screen for each allien and use that to determine when to stop
+
+                if(gameMapUI.allien[0].getBoundingClientRect().y>=window.innerHeight-(gameMapUI.cannon.clientHeight+gameMapUI.allien[0].offsetWidth))//client y=spacecraft pix+cannonsize
                 {
+                    //todo reset game on hit with cannon
                     clearInterval(timer);
                 }
             }, 100);
-            
+
+            document.addEventListener("keydown",(e)=>{
+                if(e.keyCode==32)
+                {
+                    const bulle= new bullet();
+                    bulle.spawnBullet();
+                    //todo spawn bullet at the location of the cannon
+                     
+                }
+            });
         //pause game
         //move cannon
         //read rules
