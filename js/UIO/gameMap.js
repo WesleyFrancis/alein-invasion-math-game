@@ -60,13 +60,9 @@ const level={
                     bul.remove();
                 }
                 else{
-                    
-                    
                     loc-=5;
                     console.log(`${loc}  -- `);
-
                     bul.style.marginTop=`${loc}px`;
-                
                 }
             });
             counter+=5;

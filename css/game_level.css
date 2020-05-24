@@ -54,3 +54,7 @@
     background-image: url("../images/bulletFinal.png");
     background-size: cover;
 }
+#mute{
+    width:1.5em;
+    height:1.5em;
+}
