@@ -13,6 +13,7 @@
     display: grid;
    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
    width: max-content;
+   margin:0px auto; /*156*/
 }
 .allien{
     /* background-image: url("../images/alien.png"); */

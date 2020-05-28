@@ -15,7 +15,7 @@ const level={
     moveEnimies(dist,ship)
     {
         this.playingField.children[ship].style.marginTop=`${dist}px`;
-
+       // console.log(this.playingField.children[0].offsetTop);
     },
     moveCannon(num){
 
@@ -23,16 +23,15 @@ const level={
         
     },
     showQuestions(){
-        this.playingField.children[0].innerHTML=GameInstance.question(0);
-        this.playingField.children[1].innerHTML=GameInstance.question(1);
-        this.playingField.children[2].innerHTML=GameInstance.question(2);
-        this.playingField.children[3].innerHTML=GameInstance.question(3);
-        this.playingField.children[4].innerHTML=GameInstance.question(4);
+        this.playingField.children[0].innerHTML=GameInstance.QuestionGame(0);
+        this.playingField.children[1].innerHTML=GameInstance.QuestionGame(1);
+        this.playingField.children[2].innerHTML=GameInstance.QuestionGame(2);
+        this.playingField.children[3].innerHTML=GameInstance.QuestionGame(3);
+        this.playingField.children[4].innerHTML=GameInstance.QuestionGame(4);
         this.cannon.innerHTML=GameInstance.cannon();
     },
     CreateBullet()
     {
-
         const location=[];
         location.push(this.cannon.offsetTop);//location from teh top of the screen
         location.push(this.cannon.getBoundingClientRect().x);
@@ -61,12 +60,41 @@ const level={
                 }
                 else{
                     loc-=5;
-                    console.log(`${loc}  -- `);
+                   // console.log(`${loc}  -- `);
                     bul.style.marginTop=`${loc}px`;
                 }
             });
             counter+=5;
         },100);
+    },
+    checkBulletAmt()
+    {
+        const bullets=document.querySelectorAll(".bullet");
+        return bullets.length;
+    },
+    getBulletLocation()
+    {
+        const bullets=document.querySelectorAll(".bullet");
+        const loc= new Array;
+        loc.push(bullets[0].offsetTop);
+        return loc;
+    },
+    iSOverlaping(Ship)
+    {
+        const bullets=document.querySelectorAll(".bullet");
+        const shipLocation = this.playingField.children[Ship].offsetTop;
+        const bulletLocation = bullets[0].offsetTop
+        const ShipWidth = this.playingField.children[Ship].offsetWidth;
+
+
+        if(bulletLocation<(shipLocation+ShipWidth))
+        {
+            return true;
+        }
+        else 
+        {
+            return false;
+        }
     }
 
 }

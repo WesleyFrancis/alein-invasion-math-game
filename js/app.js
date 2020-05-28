@@ -37,45 +37,22 @@ const app=
                     index=0;
                 }
             }, 100);
-       document.addEventListener("DOMContentLoaded",()=>{
+        document.addEventListener("DOMContentLoaded",()=>{
         BackgroundUI.createAudio();
         BackgroundUI.updateAudio(GameInstance.isAudioPlaying);//global state of the game information -> gameState.audio
-        this.resizeComponents();
+        this.resizeComponents();//!resize on Document load
 
        });
        BackgroundUI.mute.addEventListener("click",()=>{
             BackgroundUI.toggleAudio();
         });
-        document.addEventListener("keydown",(e)=>{
-            //* Move the cannon to the left and right using arrows and a touch type interface for mobile
-            // todo implement a way to detect touch on mobile to move the cannon left and right
-
-                const cannonDistanceFromLeft=this.convertPX(gameMapUI.cannon.style.marginLeft);
-                const cannonTravelDistance=gameMapUI.cannon.offsetWidth;
-                const gameScreenSize=gameMapUI.gameContainer.offsetWidth;
-            if(e.key=="ArrowRight")
-            {
-                if(cannonDistanceFromLeft<=gameScreenSize-cannonTravelDistance-15)
-                {
-                    GameInstance.cannonLocation+=15;
-                    gameMapUI.moveCannon(GameInstance.cannonLocation);
-                }
-            }
-            if(e.key=="ArrowLeft")
-            {
-                if(this.convertPX(gameMapUI.cannon.style.marginLeft)>=0)
-                {
-                    GameInstance.cannonLocation-=15;
-                    gameMapUI.moveCannon(GameInstance.cannonLocation);
-                }
-                
-            }
-        });
+        
         
         window.addEventListener('resize',()=>{
-            this.resizeComponents();
+            this.resizeComponents();//!resize on page resize
 
         });
+        GameInstance.TrackBullet();
     },
 
     getRandomInt(max){
@@ -110,17 +87,18 @@ const app=
        });
 
     },
-    gameMapr()
+    gameMapr()//game level script
     {
+        gameMapUI.showQuestions();
 
             let move=0;
             const timer=  setInterval(() => {
-                gameMapUI.moveEnimies(move,0);
-                gameMapUI.moveEnimies(move,1);
-                gameMapUI.moveEnimies(move,2);
-                gameMapUI.moveEnimies(move,3);
-                gameMapUI.moveEnimies(move,4);
-                move++;
+            gameMapUI.moveEnimies(move,0);
+            gameMapUI.moveEnimies(move,1);
+            gameMapUI.moveEnimies(move,2);
+            gameMapUI.moveEnimies(move,3);
+            gameMapUI.moveEnimies(move,4);
+            move++;
                 
             // console.log(`${gameMapUI.allien[0].getBoundingClientRect().y}`);
             // todo track the distance from the bottom of the screen for each allien and use that to determine when to stop
@@ -135,14 +113,44 @@ const app=
             document.addEventListener("keydown",(e)=>{
                 if(e.keyCode==32)
                 {
+                 //   console.log(gameMapUI.checkBulletAmt());
+                   if(gameMapUI.checkBulletAmt()<1)
+                   {
                     const bulle= new bullet();
                     bulle.spawnBullet();
                     //todo spawn bullet at the location of the cannon
+                   }
                      
                 }
             });
+        
+        document.addEventListener("keydown",(e)=>{//move cannon
+            //* Move the cannon to the left and right using arrows and a touch type interface for mobile
+            // todo implement a way to detect touch on mobile to move the cannon left and right
+
+                const cannonDistanceFromLeft=this.convertPX(gameMapUI.cannon.style.marginLeft);
+                const cannonTravelDistance=gameMapUI.cannon.offsetWidth;
+                const gameScreenSize=gameMapUI.gameContainer.offsetWidth;
+            if(e.key=="ArrowRight")
+            {
+                if(cannonDistanceFromLeft<=gameScreenSize-cannonTravelDistance-15)
+                {
+                    GameInstance.cannonLocation+=15;
+                    gameMapUI.moveCannon(GameInstance.cannonLocation);
+                }
+                console.log(GameInstance.cannonLocation);
+            }
+            if(e.key=="ArrowLeft")
+            {
+                if(this.convertPX(gameMapUI.cannon.style.marginLeft)>=0)
+                {
+                    GameInstance.cannonLocation-=15;
+                    gameMapUI.moveCannon(GameInstance.cannonLocation);
+                }
+                console.log(GameInstance.cannonLocation);
+            }
+        });
         //pause game
-        //move cannon
         //read rules
         //exit
         
