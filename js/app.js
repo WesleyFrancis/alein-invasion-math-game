@@ -6,6 +6,7 @@ import gameMapUI from "./UIO/gameMap.js";
 import MenuUI from "./UIO/menu.js";
 import GameInstance from "./BIO/gameInstance.js";
 import bullet from "./BIO/bullet.js";
+import Question from "./BIO/question.js";
 const app=
 {
     startscrn: document.querySelector("#startBody"),
@@ -52,7 +53,7 @@ const app=
             this.resizeComponents();//!resize on page resize
 
         });
-        GameInstance.TrackBullet();
+        
     },
 
     getRandomInt(max){
@@ -93,19 +94,22 @@ const app=
 
             let move=0;
             const timer=  setInterval(() => {
+                move=GameInstance.allienOffset;
             gameMapUI.moveEnimies(move,0);
             gameMapUI.moveEnimies(move,1);
             gameMapUI.moveEnimies(move,2);
             gameMapUI.moveEnimies(move,3);
             gameMapUI.moveEnimies(move,4);
+
             move++;
-                
+            GameInstance.allienOffset=move;
             // console.log(`${gameMapUI.allien[0].getBoundingClientRect().y}`);
             // todo track the distance from the bottom of the screen for each allien and use that to determine when to stop
 
                 if(gameMapUI.allien[0].getBoundingClientRect().y>=window.innerHeight-(gameMapUI.cannon.clientHeight+gameMapUI.allien[0].offsetWidth))//client y=spacecraft pix+cannonsize
                 {
                     //todo reset game on hit with cannon
+                    //! This is where the game starts over as the ships hit the cannon
                     clearInterval(timer);
                 }
             }, 100);
@@ -118,7 +122,7 @@ const app=
                    {
                     const bulle= new bullet();
                     bulle.spawnBullet();
-                    //todo spawn bullet at the location of the cannon
+                    GameInstance.TrackBullet(); //*check bullet location peridocilly 
                    }
                      
                 }
@@ -138,7 +142,6 @@ const app=
                     GameInstance.cannonLocation+=15;
                     gameMapUI.moveCannon(GameInstance.cannonLocation);
                 }
-                console.log(GameInstance.cannonLocation);
             }
             if(e.key=="ArrowLeft")
             {
@@ -147,8 +150,30 @@ const app=
                     GameInstance.cannonLocation-=15;
                     gameMapUI.moveCannon(GameInstance.cannonLocation);
                 }
-                console.log(GameInstance.cannonLocation);
             }
+            //!testingggg
+
+            // if(e.keyCode==48)
+            // {
+            //     Question.CheckIfCorrect(0);
+            // }
+            // if(e.keyCode==49)
+            // {
+            //     Question.CheckIfCorrect(1);
+            // }
+            // if(e.keyCode==50)
+            // {
+            //     Question.CheckIfCorrect(2);
+            // }
+            // if(e.keyCode==51)
+            // {
+            //     Question.CheckIfCorrect(3);
+            // }
+            // if(e.keyCode==52)
+            // {
+            //     Question.CheckIfCorrect(4);
+            // }
+            //!testingggg
         });
         //pause game
         //read rules

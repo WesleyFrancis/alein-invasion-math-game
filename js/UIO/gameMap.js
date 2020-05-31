@@ -1,5 +1,6 @@
 import Alien from "../BIO/alien.js";
 import GameInstance from "../BIO/gameInstance.js";
+import Question from "../BIO/question.js";
 
 const level={
     body:document.querySelector("body"),
@@ -7,7 +8,9 @@ const level={
     playingField:document.querySelector("#enime"),
     cannon:document.querySelector("#cannon"),
     allien:document.querySelectorAll(".allien"),
-    bullets:document.querySelectorAll(".bullet"),
+    bullets:document.querySelector("#bullet"),
+    hit:document.querySelector("#hit"),
+    miss:document.querySelector("#miss"),
     startGame()//create emimies
     {
 
@@ -15,20 +18,20 @@ const level={
     moveEnimies(dist,ship)
     {
         this.playingField.children[ship].style.marginTop=`${dist}px`;
-       // console.log(this.playingField.children[0].offsetTop);
+
     },
     moveCannon(num){
 
-            this.cannon.style.marginLeft=`${num}px`;
-        
+        this.cannon.style.marginLeft=`${num}px`;
     },
     showQuestions(){
-        this.playingField.children[0].innerHTML=GameInstance.QuestionGame(0);
-        this.playingField.children[1].innerHTML=GameInstance.QuestionGame(1);
-        this.playingField.children[2].innerHTML=GameInstance.QuestionGame(2);
-        this.playingField.children[3].innerHTML=GameInstance.QuestionGame(3);
-        this.playingField.children[4].innerHTML=GameInstance.QuestionGame(4);
-        this.cannon.innerHTML=GameInstance.cannon();
+        Question.CreateQuestion();
+        this.playingField.children[0].innerHTML=Question.info.allien[0];
+        this.playingField.children[1].innerHTML=Question.info.allien[1];
+        this.playingField.children[2].innerHTML=Question.info.allien[2];
+        this.playingField.children[4].innerHTML=Question.info.allien[4];
+        this.playingField.children[3].innerHTML=Question.info.allien[3];
+        this.cannon.innerHTML=Question.info.cannon;
     },
     CreateBullet()
     {
@@ -40,11 +43,13 @@ const level={
         //todo: spawn at cannon distance from left location[1];
         const bullet=document.createElement("div");
         bullet.setAttribute("class","bullet");
+        bullet.setAttribute("id","bullet");
         bullet.style.top=`${this.cannon.offsetTop}px`;
-        bullet.style.left=`${location[1]+(this.cannon.offsetWidth/2)-25}px`;
-        console.log();
+        bullet.style.left=`${location[1]+(this.cannon.offsetWidth/2)-25}px`;//TODO 25px should be dynamic for when the bullet is automatically resized
+        bullet.style.width='50px';//!should be dynamic
         this.body.appendChild(bullet);
        this.move();
+       GameInstance.bulletLocation=location[1]+(this.cannon.offsetWidth/2)-25;//* Set Bullet Location in game instance
     },
     move()
     {
@@ -59,8 +64,7 @@ const level={
                     bul.remove();
                 }
                 else{
-                    loc-=5;
-                   // console.log(`${loc}  -- `);
+                    loc-=15;//! bullet speed
                     bul.style.marginTop=`${loc}px`;
                 }
             });
@@ -79,23 +83,29 @@ const level={
         loc.push(bullets[0].offsetTop);
         return loc;
     },
-    iSOverlaping(Ship)
+    getBulletSize()//*size of the bullet to compensate for offset/anchor
     {
         const bullets=document.querySelectorAll(".bullet");
-        const shipLocation = this.playingField.children[Ship].offsetTop;
-        const bulletLocation = bullets[0].offsetTop
-        const ShipWidth = this.playingField.children[Ship].offsetWidth;
+       let Bwidth=bullets[0].style.width;
+    //    console.log(bullets[0].style);
+       Bwidth=Bwidth.slice(0,2);
+       Bwidth = parseFloat(Bwidth);
+        
+        return  Bwidth/2;//! returns the size of the bullet to make the accuracy of the targeting better.
 
-
-        if(bulletLocation<(shipLocation+ShipWidth))
-        {
-            return true;
-        }
-        else 
-        {
-            return false;
-        }
+    },
+    deleteBullet()
+    {
+        const bullet=document.querySelectorAll(".bullet");
+        bullet[0].remove();
+    },
+    updateHit()
+    {
+        this.hit.innerHTML = GameInstance.hit;
+    },
+    updateMiss()
+    {
+        this.miss.innerHTML = GameInstance.miss;
     }
-
 }
 export default level;

@@ -7,7 +7,7 @@
     grid-template-rows:1fr auto;
     justify-items: center;
     min-height: 100%;
-    font-size: 2rem;
+    font-size: 2rm;
 }
 #enime{
     display: grid;
@@ -37,15 +37,13 @@
     background-image: url("../images/alien.png");
     background-size: cover;
     background-repeat: no-repeat;
-
-}
-.allien > h6{
-    text-align: center;
-    margin-top: -5px;
-    font-size: .8em;
+    font-size: .5em;
+    font-weight: 500;
 }
 #cannon{
     align-self: end;
+    font-size: .5em;
+    font-weight: 900;
 }
 .bullet{
     width:50px;
@@ -58,4 +56,12 @@
 #mute{
     width:1.5em;
     height:1.5em;
+}
+#gameMap > section{
+    position: absolute;
+    top: 5px;
+    left:100px;
+    margin:0px auto;
+    font-size: 1.2rem;
+    color : #fff;
 }
