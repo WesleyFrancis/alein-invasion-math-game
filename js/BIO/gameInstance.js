@@ -8,6 +8,22 @@ const GameInstance ={
     allienOffset:0,
     hit:0,
     miss:0,
+    SaveData:{
+        playerName,
+        allienDist:[-12,-435,-6,-78,-78],//@ Distance from the top for each allien
+        cannonPos:0,
+        difficultyLevel:0,
+        currentLevel:0,
+        currentQuestion:{
+            allien:[0,0,0,0,0],
+            cannon:0
+        },
+        isAudioPlaying:false,
+        numOfHits:0,
+        numOfMisses:0,
+        timeRemaining:0,
+        bulletLocation:-34
+    },
     question:{
         cannon:0,
         allien:[]
@@ -32,6 +48,7 @@ const GameInstance ={
     saveGame()
     {
         //TODO :tell game data to save game state
+
     },
     QuestionGame(index)
     {   
