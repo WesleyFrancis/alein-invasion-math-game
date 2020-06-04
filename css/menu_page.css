@@ -22,7 +22,8 @@
 #allien
 {
     -webkit-animation: alien-hover 3s cubic-bezier(0.250, 0.460, 0.450, 0.940)  infinite both;
-	animation: alien-hover 3s cubic-bezier(0.250, 0.460, 0.450, 0.940)  infinite both;
+    animation: alien-hover 3s cubic-bezier(0.250, 0.460, 0.450, 0.940)  infinite both;
+    z-index: 1;
 }
 #MainMenu{
     display:grid;
@@ -41,6 +42,7 @@ section{
     color: #fff;
     line-height: 50px;
     text-align: center;
+    z-index: 10;
 }
 @keyframes alien-hover {
     0% {

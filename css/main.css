@@ -60,3 +60,17 @@ body{
     padding: 12px 25px;
     transition: padding 1s;
 }
+#mute{
+    width:1.5em;
+    height:1.5em;
+}
+#mute:hover{
+    cursor: pointer;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    width:1.5em;
+    height:1.5em;
+}
+#MainMenu > section > img{
+    cursor: pointer;
+}

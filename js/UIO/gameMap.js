@@ -11,14 +11,21 @@ const level={
     bullets:document.querySelector("#bullet"),
     hit:document.querySelector("#hit"),
     miss:document.querySelector("#miss"),
+    save:document.querySelector("#gameMap > section > button"),
+    left:document.querySelector("#left"),
+    shoot:document.querySelector("#shoot"),
+    right:document.querySelector("#right"),
     startGame()//create emimies
     {
 
     },
-    moveEnimies(dist,ship)
+    moveEnimies(dist)
     {
-        this.playingField.children[ship].style.marginTop=`${dist}px`;
-
+        for(let i=0;i<5;i++)
+        {
+            let ofset=GameInstance.SaveData.currentQuestion.allienRanDist[i];
+            this.playingField.children[i].style.marginTop=`${dist-ofset}px`;
+        }
     },
     moveCannon(num){
 
@@ -48,15 +55,17 @@ const level={
         bullet.style.left=`${location[1]+(this.cannon.offsetWidth/2)-25}px`;//TODO 25px should be dynamic for when the bullet is automatically resized
         bullet.style.width='50px';//!should be dynamic
         this.body.appendChild(bullet);
-       this.move();
-       GameInstance.bulletLocation=location[1]+(this.cannon.offsetWidth/2)-25;//* Set Bullet Location in game instance
+        this.move();
+        GameInstance.SaveData.bulletLocation=location[1]+(this.cannon.offsetWidth/2)-25;//* Set Bullet Location in game instance
     },
     move()
     {
         const bullets=document.querySelectorAll(".bullet");
         let counter=0;
-        setInterval(()=>{
-            bullets.forEach((bul)=>{
+        setInterval(()=>
+        {
+            bullets.forEach((bul)=>
+            {
                 let loc=bul.style.marginTop;
                 loc=loc.slice(0, -2);
                 if(loc*-1>window.innerHeight)
@@ -86,13 +95,17 @@ const level={
     getBulletSize()//*size of the bullet to compensate for offset/anchor
     {
         const bullets=document.querySelectorAll(".bullet");
-       let Bwidth=bullets[0].style.width;
-    //    console.log(bullets[0].style);
-       Bwidth=Bwidth.slice(0,2);
-       Bwidth = parseFloat(Bwidth);
-        
-        return  Bwidth/2;//! returns the size of the bullet to make the accuracy of the targeting better.
+        let Bwidth=bullets[0].style.width;
+        Bwidth=Bwidth.slice(0,-2);
+        Bwidth = parseFloat(Bwidth);
 
+        return  Bwidth/2;//! returns the size of the bullet to make the accuracy of the targeting better.
+    },
+    getBulletMargin()
+    {
+        const bullets=document.querySelectorAll(".bullet");
+        let Bwidth=bullets[0].style.left;
+        return Bwidth.slice(0,-2);
     },
     deleteBullet()
     {
@@ -101,11 +114,11 @@ const level={
     },
     updateHit()
     {
-        this.hit.innerHTML = GameInstance.hit;
+        this.hit.innerHTML = GameInstance.SaveData.hit;
     },
     updateMiss()
     {
-        this.miss.innerHTML = GameInstance.miss;
+        this.miss.innerHTML = GameInstance.SaveData.miss;
     }
 }
 export default level;

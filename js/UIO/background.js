@@ -1,4 +1,5 @@
 import GameInstance from "../BIO/gameInstance.js";
+import gameUI from "./gameMap.js";
 const background={
 
     background:document.querySelector("body"),
@@ -10,15 +11,23 @@ const background={
    },
    updateAudio(isplaying)
    {
-    const audio=this.background.querySelector("audio");
+       if(this.background.querySelector("audio")==null)
+       {
+            this.createAudio();
+       }
+        const audio=this.background.querySelector("audio");
        if(isplaying)
         {
             audio.load();
             audio.play();
+            mute.setAttribute("src","../images/sound.png");
+            GameInstance.SaveData.isAudioPlaying=true;
         }
         else{
 
             audio.pause();
+            mute.setAttribute("src","../images/mute.png");
+            GameInstance.SaveData.isAudioPlaying=false;
         }
     },
     createAudio()
@@ -33,29 +42,16 @@ const background={
             this.background.appendChild(aud);
         }
    },
-   upadteAudio(isplaying)
-   {
-        if(isplaying)
-        {
-            this.mute.load();
-            this.mute.play();
-        }
-        else
-        {
-            this.mute.pause();
-        }
-
-   },
    toggleAudio()
    {
-       if(GameInstance.isplaying)
+       if(GameInstance.SaveData.isAudioPlaying)//TODO change icon based on audio state
        {
            this.updateAudio(false);
-           GameInstance.isplaying=false;
+           GameInstance.SaveData.isAudioPlaying=false;
        }
        else{
             this.updateAudio(true);
-           GameInstance.isplaying=true;
+           GameInstance.SaveData.isAudioPlaying=true;
        }
    }
 }

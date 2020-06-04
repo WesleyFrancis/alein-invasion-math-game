@@ -1,34 +1,63 @@
 import gameUI from "../UIO/gameMap.js";
 import question from "./question.js";
+import background from "../UIO/background.js";
 const GameInstance ={
     //!all the information a game would need to have
-    isAudioPlaying:false,
-    cannonLocation:0,
-    bulletLocation:0,
-    allienOffset:0,
-    hit:0,
-    miss:0,
+    // isAudioPlaying:false,
+    // cannonLocation:0,
+    // bulletLocation:0,
+    // allienOffset:0,
+    // hit:0,
+    // miss:0,
     SaveData:{
-        playerName,
-        allienDist:[-12,-435,-6,-78,-78],//@ Distance from the top for each allien
-        cannonPos:0,
+        playerName:0,
+        allienDist:[],//@ Distance from the top for each allien
+        cannonLocation:0,
         difficultyLevel:0,
         currentLevel:0,
+        allienOffset:0,
         currentQuestion:{
-            allien:[0,0,0,0,0],
-            cannon:0
+            allien:[],
+            cannon:0,
+            allienRanDist:[],
         },
         isAudioPlaying:false,
         numOfHits:0,
         numOfMisses:0,
         timeRemaining:0,
-        bulletLocation:-34
+        bulletLocation:0,
+        hit:0,
+        miss:0
     },
-    question:{
-        cannon:0,
-        allien:[]
-    },//* question is an object that holds informatio pertainig to the whole game question
-
+    // question:{
+    //     cannon:0,
+    //     allien:[]
+    // },
+    init()
+    {
+        this.SaveData.difficultyLevel=this.getLevel();
+        this.SaveData.isAudioPlaying=this.getSaved().isAudioPlaying;
+        if(this.getSaved().isAudioPlaying)
+        {
+            background.toggleAudio(true);
+        }
+        if(this.SaveData.currentQuestion.allienRanDist.length>0)
+        {
+            localStorage.setItem("saveData",JSON.stringify(this.SaveData));
+        }
+        else{
+            this.setOffset()
+        }
+        this.StartLevel1();
+    },
+    StartLevel1()
+    {
+        const timmer=setTimeout(()=>{
+            //Move on to next level
+            this.SaveData.currentLevel=1;//minus
+            gameUI.showQuestions();
+        },90000);
+    },
     startGame()
     {
         //TODO : reset elements and fetch a new question
@@ -44,11 +73,6 @@ const GameInstance ={
     endGame()
     {
         //TODO :do what game end should do show score etc
-    },
-    saveGame()
-    {
-        //TODO :tell game data to save game state
-
     },
     QuestionGame(index)
     {   
@@ -68,12 +92,12 @@ const GameInstance ={
                 {
                     clearInterval(checker);
                     gameUI.deleteBullet();
+                   // background.playhut(); would be used to play audio
                     //TODO in here is where everything pertaining to when the bullet collide happens
                     //TODO increment hit/miss restart game etc.
                 }
             },100);
         }
-
     },
     CheckIfColliding()//@ check to see if the bullet is colliding with any craft
     {
@@ -82,7 +106,7 @@ const GameInstance ={
         //Get 
         const ScreenWidth = window.outerWidth;
         let allienWidth= gameUI.allien[0].style.width;
-        allienWidth = allienWidth.slice(0,2);// remove the px in the width
+        allienWidth = allienWidth.slice(0,-2);// remove the px in the width
         allienWidth= parseFloat(allienWidth);
         let start = ScreenWidth -(allienWidth*5);
         start=start/2;//Distance from left where allien start on screen
@@ -90,8 +114,9 @@ const GameInstance ={
         let Ship=-1;
         let BulletWidth= gameUI.getBulletSize();
 
-       let bulletLocation = this.bulletLocation+BulletWidth;//
+       let bulletLocation = parseInt(gameUI.getBulletMargin())+BulletWidth ; //this.SaveData.cannonLocation+BulletWidth;//
 
+       // console.log(`bulletLocation:${bulletLocation} BulletWidth:${BulletWidth}`);
         if(bulletLocation<(start+allienWidth))
         {
             Ship=0;
@@ -112,41 +137,76 @@ const GameInstance ={
         {
             Ship=4;
         }
-      //now we know the ship we can check it's collision with the bullet
-       // console.log(gameUI.playingField.children);
+        //now we know the ship we can check it's collision with the bullet
+        //console.log(gameUI.playingField.children);
         const shipwidth = gameUI.playingField.children[Ship].offsetWidth;
-       const shipOffsetTop= gameUI.playingField.children[Ship].offsetTop;
+        const shipOffsetTop= gameUI.playingField.children[Ship].offsetTop;
 
         if(gameUI.getBulletLocation()<shipwidth+shipOffsetTop)
         {
-            
+            console.log(`OffsetTop:${gameUI.getBulletLocation()} Ship:${Ship}`);
             if(question.CheckIfCorrect(Ship))
             {
+                //@ reset spaceships to the top and create new question
                 console.log("correct");
-                this.allienOffset=0;
-               
+                this.SaveData.allienOffset=0; 
                 gameUI.showQuestions();
-                //TODO reset spaceships to the top and create new question
-            }
-            else{
-                console.log("Wrong");
-                //TODO do stuff here fr correct
                 
+            }
+            else
+            {
+                //@ do stuff here fr correct
+                console.log("Wrong");
                 gameUI.showQuestions();
             }
             return true;
+        } 
+        else
+        {
+         return false;
         }
-      //  
     },
     hitted()
     {
-        this.hit+=1;
+        this.SaveData.hit+=1;
         gameUI.updateHit();
     },
     missed()
     {
-        this.miss+=1;
+        this.SaveData.miss+=1;
         gameUI.updateMiss();
+    },
+    setLevel(level)
+    {
+        this.SaveData.difficultyLevel=level;
+        localStorage.setItem("saveData",JSON.stringify(this.SaveData));
+    },
+    getLevel()
+    {
+        return this.getSaved().difficultyLevel;
+    },
+    setPlayerName(name)
+    {
+        this.SaveData.playerName=name;
+        localStorage.setItem("saveData",JSON.stringify(this.SaveData));
+    },
+    getPLayerName()
+    {
+        return this.getSaved().playerName
+    },
+    getSaved(){
+        const datas=localStorage.getItem("saveData")//
+        const fixed=JSON.parse(datas);
+        return fixed;//! returns the object that was saved
+    },
+    setOffset()
+    {
+        this.SaveData.currentQuestion.allienRanDist.length=0;//empty the array
+        for(let i=0;i<5;i++)
+        {
+            let Num = Math.floor(Math.random() * Math.floor(50));
+            this.SaveData.currentQuestion.allienRanDist.push(Num);
+        }
     }
 }
 export default GameInstance;

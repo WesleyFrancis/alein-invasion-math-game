@@ -27,38 +27,34 @@ const app=
         {
             this.gameMapr();
         }
-        //update background regardless of webpage
-            let index=1;
-            setInterval((e) => {
-               BackgroundUI.updateBackground(index);
-
-                index++;
-                if(index>=708)//708 width f ackground image to fake looping
-                {
-                    index=0;
-                }
-            }, 100);
+        GameInstance.init();
+        
         document.addEventListener("DOMContentLoaded",()=>{
-        BackgroundUI.createAudio();
-        BackgroundUI.updateAudio(GameInstance.isAudioPlaying);//global state of the game information -> gameState.audio
-        this.resizeComponents();//!resize on Document load
-
+            this.updateBackground();
+            BackgroundUI.createAudio();
+            BackgroundUI.updateAudio(GameInstance.SaveData.isAudioPlaying);//global state of the game information -> gameState.audio
+           
        });
        BackgroundUI.mute.addEventListener("click",()=>{
             BackgroundUI.toggleAudio();
         });
-        
-        
-        window.addEventListener('resize',()=>{
-            this.resizeComponents();//!resize on page resize
-
-        });
-        
     },
+    updateBackground()//update background regardless of webpage
+    {
+        let index=1;
+        setInterval((e) => {
+            BackgroundUI.updateBackground(index);
 
+            index++;
+            if(index>=708)//708 width f ackground image to fake looping
+            {
+                index=0;
+            }
+        }, 100);
+    },
     getRandomInt(max){
         return Math.floor(Math.random() * Math.floor(max));
-      },
+    },
     convertPX(pixels)
     {
         return pixels.slice(0,-2);///substring(0, distance.length-2); //gameMapUI.cannon.style.marginLeft; //! remove the px character
@@ -71,7 +67,8 @@ const app=
             //save player info to player class and session
             if(StartScreenUI.userName.value!='')
             {
-                plyrDta.savePlayer(StartScreenUI.userName.value);
+              //  plyrDta.savePlayer(StartScreenUI.userName.value);
+              GameInstance.setPlayerName(StartScreenUI.userName.value);
                 window.location ="html/menu.html";
             }
             else
@@ -82,29 +79,47 @@ const app=
     },
     mainMenu()
     {
-        MenuUI.setName(`Hi ${localStorage.getItem("playerName")}`);
-        MenuUI.playBtn.addEventListener("click",()=>{
+        MenuUI.setName(`Hi ${GameInstance.getPLayerName()}`);
+
+        MenuUI.Easy.addEventListener("click",()=>{
+            GameInstance.setLevel("easy");
             window.location="../html/gameMap.html";
        });
 
+       MenuUI.Hard.addEventListener("click",()=>{
+            GameInstance.setLevel("hard");
+            window.location="../html/gameMap.html";
+       })
     },
     gameMapr()//game level script
     {
+        GameInstance.init();//initialize infirmation for 1st time run.
+        this.resizeComponents();//? DETECT SCREEN AND SCALE ELEMENTS TO FIT
+
+        window.addEventListener('resize',()=>{
+            this.resizeComponents();//!resize on page resize
+
+        });
+
         gameMapUI.showQuestions();
 
             let move=0;
             const timer=  setInterval(() => {
-                move=GameInstance.allienOffset;
-            gameMapUI.moveEnimies(move,0);
-            gameMapUI.moveEnimies(move,1);
-            gameMapUI.moveEnimies(move,2);
-            gameMapUI.moveEnimies(move,3);
-            gameMapUI.moveEnimies(move,4);
+            move=GameInstance.SaveData.allienOffset;//distance from the top
+            //Todo > make this more intuitave
+            const io = move;
 
-            move++;
-            GameInstance.allienOffset=move;
-            // console.log(`${gameMapUI.allien[0].getBoundingClientRect().y}`);
-            // todo track the distance from the bottom of the screen for each allien and use that to determine when to stop
+            gameMapUI.moveEnimies(move);
+
+            if(GameInstance.SaveData.difficultyLevel=="hard")
+            {
+                move+=6; 
+            }
+            else if(GameInstance.SaveData.difficultyLevel=="easy")
+            {
+                move+=1;
+            }
+            GameInstance.SaveData.allienOffset=move;
 
                 if(gameMapUI.allien[0].getBoundingClientRect().y>=window.innerHeight-(gameMapUI.cannon.clientHeight+gameMapUI.allien[0].offsetWidth))//client y=spacecraft pix+cannonsize
                 {
@@ -117,7 +132,6 @@ const app=
             document.addEventListener("keydown",(e)=>{
                 if(e.keyCode==32)
                 {
-                 //   console.log(gameMapUI.checkBulletAmt());
                    if(gameMapUI.checkBulletAmt()<1)
                    {
                     const bulle= new bullet();
@@ -139,46 +153,55 @@ const app=
             {
                 if(cannonDistanceFromLeft<=gameScreenSize-cannonTravelDistance-15)
                 {
-                    GameInstance.cannonLocation+=15;
-                    gameMapUI.moveCannon(GameInstance.cannonLocation);
+                    GameInstance.SaveData.cannonLocation+=15;
+                    gameMapUI.moveCannon(GameInstance.SaveData.cannonLocation);
                 }
             }
             if(e.key=="ArrowLeft")
             {
                 if(this.convertPX(gameMapUI.cannon.style.marginLeft)>=0)
                 {
-                    GameInstance.cannonLocation-=15;
-                    gameMapUI.moveCannon(GameInstance.cannonLocation);
+                    GameInstance.SaveData.cannonLocation-=15;
+                    gameMapUI.moveCannon(GameInstance.SaveData.cannonLocation);
                 }
             }
-            //!testingggg
-
-            // if(e.keyCode==48)
-            // {
-            //     Question.CheckIfCorrect(0);
-            // }
-            // if(e.keyCode==49)
-            // {
-            //     Question.CheckIfCorrect(1);
-            // }
-            // if(e.keyCode==50)
-            // {
-            //     Question.CheckIfCorrect(2);
-            // }
-            // if(e.keyCode==51)
-            // {
-            //     Question.CheckIfCorrect(3);
-            // }
-            // if(e.keyCode==52)
-            // {
-            //     Question.CheckIfCorrect(4);
-            // }
-            //!testingggg
         });
-        //pause game
-        //read rules
-        //exit
-        
+       
+        gameMapUI.save.addEventListener("click",()=>{
+            GameInstance.init();
+            alert("game saved");
+        });
+
+        gameMapUI.shoot.addEventListener("click",()=>{
+            if(gameMapUI.checkBulletAmt()<1)
+                   {
+                    const bulle= new bullet();
+                    bulle.spawnBullet();
+                    GameInstance.TrackBullet(); //*check bullet location peridocilly 
+                   }
+        });
+        gameMapUI.left.addEventListener("click",()=>{
+            if(this.convertPX(gameMapUI.cannon.style.marginLeft)>=0)
+                {
+                    GameInstance.SaveData.cannonLocation-=15;
+                    gameMapUI.moveCannon(GameInstance.SaveData.cannonLocation);
+                }
+        });
+
+        gameMapUI.right.addEventListener("click",()=>{
+        const cannonDistanceFromLeft=this.convertPX(gameMapUI.cannon.style.marginLeft);
+        const cannonTravelDistance=gameMapUI.cannon.offsetWidth;
+        const gameScreenSize=gameMapUI.gameContainer.offsetWidth;
+
+            if(cannonDistanceFromLeft<=gameScreenSize-cannonTravelDistance-15)
+                {
+                    GameInstance.SaveData.cannonLocation+=15;
+                    gameMapUI.moveCannon(GameInstance.SaveData.cannonLocation);
+                }
+        });
+
+
+ 
     },
     resizeComponents()
     {
@@ -191,6 +214,32 @@ const app=
         },);
         gameMapUI.cannon.style.width=`${allienSize*1.2}px`;
         gameMapUI.cannon.style.height=`${allienSize*1.2}px`;
+
+        const shoot=gameMapUI.shoot;
+        const left=gameMapUI.left;
+        const right=gameMapUI.right;
+
+        if(containerWIdth<=768)
+        {
+
+            shoot.style.display="initial";
+            left.style.display="initial";
+            right.style.display="initial";
+
+            const cent= containerWIdth/2 -50;
+            const marg =containerWIdth-100;
+            
+            right.style.marginLeft=`${marg}px`;
+            shoot.style.marginLeft=`${cent}px`;
+
+
+        }
+        else{
+            shoot.style.display="none";
+            left.style.display="none";
+            right.style.display="none";
+        }
+
     }
   
 }
