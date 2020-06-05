@@ -11,10 +11,11 @@ const level={
     bullets:document.querySelector("#bullet"),
     hit:document.querySelector("#hit"),
     miss:document.querySelector("#miss"),
-    save:document.querySelector("#gameMap > section > button"),
+    save:document.querySelector("#save"),
     left:document.querySelector("#left"),
     shoot:document.querySelector("#shoot"),
     right:document.querySelector("#right"),
+    timmer:document.querySelector("#timmer"),
     startGame()//create emimies
     {
 
@@ -114,11 +115,36 @@ const level={
     },
     updateHit()
     {
-        this.hit.innerHTML = GameInstance.SaveData.hit;
+        if(GameInstance.SaveData.currentLevel==0)
+        {
+            this.hit.innerHTML = GameInstance.SaveData.hit;
+        }
+        else{
+            this.hit.innerHTML = GameInstance.SaveData.hit2;
+        }
+        
     },
     updateMiss()
     {
-        this.miss.innerHTML = GameInstance.SaveData.miss;
+        if(GameInstance.SaveData.currentLevel==0)
+        {
+            this.miss.innerHTML = GameInstance.SaveData.miss;
+        }
+        else
+        {
+            this.miss.innerHTML = GameInstance.SaveData.miss2;
+        }
+       
+    },
+    resetCounter()
+    {
+        this.miss.innerHTML=0;
+        this.hit.innerHTML = 0;
+    },
+    updateTimmer(time)
+    {
+        this.timmer.innerHTML= time;
     }
+
 }
 export default level;

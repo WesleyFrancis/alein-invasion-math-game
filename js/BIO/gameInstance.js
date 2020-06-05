@@ -3,12 +3,6 @@ import question from "./question.js";
 import background from "../UIO/background.js";
 const GameInstance ={
     //!all the information a game would need to have
-    // isAudioPlaying:false,
-    // cannonLocation:0,
-    // bulletLocation:0,
-    // allienOffset:0,
-    // hit:0,
-    // miss:0,
     SaveData:{
         playerName:0,
         allienDist:[],//@ Distance from the top for each allien
@@ -22,19 +16,21 @@ const GameInstance ={
             allienRanDist:[],
         },
         isAudioPlaying:false,
-        numOfHits:0,
-        numOfMisses:0,
         timeRemaining:0,
         bulletLocation:0,
         hit:0,
-        miss:0
+        miss:0,
+        hit2:0,
+        miss2:0
     },
-    // question:{
-    //     cannon:0,
-    //     allien:[]
-    // },
     init()
     {
+        const gameMap= document.querySelector("#gameMap");
+        if(gameMap!=null)
+        {
+            this.SaveData.timeRemaining=gameUI.timmer.innerHTML;
+        }
+        this.SaveData.playerName=this.getSaved().playerName;
         this.SaveData.difficultyLevel=this.getLevel();
         this.SaveData.isAudioPlaying=this.getSaved().isAudioPlaying;
         if(this.getSaved().isAudioPlaying)
@@ -46,17 +42,56 @@ const GameInstance ={
             localStorage.setItem("saveData",JSON.stringify(this.SaveData));
         }
         else{
-            this.setOffset()
+            this.setOffset();
         }
-        this.StartLevel1();
+        if(this.SaveData.currentLevel==0)
+        {
+            this.StartLevel1(90000);
+        }
+
     },
-    StartLevel1()
+    StartLevel1(timeremaining)
     {
+        let timemere=timeremaining;
         const timmer=setTimeout(()=>{
             //Move on to next level
             this.SaveData.currentLevel=1;//minus
             gameUI.showQuestions();
-        },90000);
+            gameUI.resetCounter();
+           this.startLevel2(60000);
+        },timeremaining);
+
+        const updater=setInterval(()=>{
+            timemere-=1000;
+            gameUI.updateTimmer(timemere/1000);
+            
+            if(timemere<=1000){
+                if(this.SaveData.currentLevel==0)
+                {
+                    timemere=9000;
+                }
+                clearInterval(updater);
+            }
+        },1000);
+    },
+    startLevel2(timeremaining)
+    {
+        let timemere=timeremaining;
+        const timmer=setTimeout(()=>{
+            this.SaveData.currentLevel=3;
+            this.init();
+            window.location="endGame.html";
+        },timeremaining);
+
+        const updater=setInterval(()=>{
+            timemere-=1000;
+            gameUI.updateTimmer(timemere/1000);
+            
+            if(timemere<=1000)
+            {
+                clearInterval(updater);
+            }
+        },1000);
     },
     startGame()
     {
@@ -88,13 +123,13 @@ const GameInstance ={
         {
             const checker = setInterval(()=>{
                 
-                if(this.CheckIfColliding())
+                if(this.CheckIfColliding())//@ increment hit/miss restart game etc.
                 {
                     clearInterval(checker);
                     gameUI.deleteBullet();
-                   // background.playhut(); would be used to play audio
-                    //TODO in here is where everything pertaining to when the bullet collide happens
-                    //TODO increment hit/miss restart game etc.
+                   //? background.playhut(); would be used to play audio
+
+                    
                 }
             },100);
         }
@@ -168,13 +203,32 @@ const GameInstance ={
     },
     hitted()
     {
-        this.SaveData.hit+=1;
-        gameUI.updateHit();
+        if(this.SaveData.currentLevel==0)
+        {
+            this.SaveData.hit+=1;
+            gameUI.updateHit();
+        }
+        else
+        {
+            this.SaveData.hit2+=1;
+            gameUI.updateHit();
+        }
+        
+        
     },
     missed()
     {
-        this.SaveData.miss+=1;
-        gameUI.updateMiss();
+        if(this.SaveData.currentLevel==0)
+        {
+            this.SaveData.miss+=1;
+            gameUI.updateMiss();
+        }
+        else
+        {
+            this.SaveData.miss2+=1;
+            gameUI.updateMiss();
+        }
+        
     },
     setLevel(level)
     {
@@ -207,6 +261,10 @@ const GameInstance ={
             let Num = Math.floor(Math.random() * Math.floor(50));
             this.SaveData.currentQuestion.allienRanDist.push(Num);
         }
+    },
+    saveName()
+    {
+        localStorage.setItem("saveData",JSON.stringify(this.SaveData));
     }
 }
 export default GameInstance;

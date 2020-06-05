@@ -7,11 +7,13 @@ import MenuUI from "./UIO/menu.js";
 import GameInstance from "./BIO/gameInstance.js";
 import bullet from "./BIO/bullet.js";
 import Question from "./BIO/question.js";
+import end from "./UIO/endGame.js";
 const app=
 {
     startscrn: document.querySelector("#startBody"),
     mainscrns: document.querySelector("#MainMenu"),
     gameMap: document.querySelector("#gameMap"),
+    endScreen:document.querySelector("#endScreen"),
 
     init()
     {
@@ -26,6 +28,10 @@ const app=
         else if(this.gameMap!=null)
         {
             this.gameMapr();
+        }
+        else if(this.endScreen!=null)
+        {
+            this.endScrn();
         }
         GameInstance.init();
         
@@ -80,6 +86,7 @@ const app=
     mainMenu()
     {
         MenuUI.setName(`Hi ${GameInstance.getPLayerName()}`);
+        GameInstance.init();
 
         MenuUI.Easy.addEventListener("click",()=>{
             GameInstance.setLevel("easy");
@@ -103,44 +110,41 @@ const app=
 
         gameMapUI.showQuestions();
 
-            let move=0;
-            const timer=  setInterval(() => {
-            move=GameInstance.SaveData.allienOffset;//distance from the top
-            //Todo > make this more intuitave
-            const io = move;
+        let move=0;
+        const timer=  setInterval(() => {//! make it only end if any 1 of each ship dit cannon not just [0]|add visible timmer to screen and store time remaining to make continueing dynamic | made resumption
+        move=GameInstance.SaveData.allienOffset;//distance from the top
+        //Todo > make this more intuitave
+        gameMapUI.moveEnimies(move);
 
-            gameMapUI.moveEnimies(move);
+        if(GameInstance.SaveData.difficultyLevel=="hard")
+        {
+            move+=6; 
+        }
+        else if(GameInstance.SaveData.difficultyLevel=="easy")
+        {
+            move+=1;
+        }
+        GameInstance.SaveData.allienOffset=move;
 
-            if(GameInstance.SaveData.difficultyLevel=="hard")
+        if(gameMapUI.allien[0].getBoundingClientRect().y>=window.innerHeight-(gameMapUI.cannon.clientHeight+gameMapUI.allien[0].offsetWidth))//client y=spacecraft pix+cannonsize
+        {
+            clearInterval(timer);
+            GameInstance.init();
+            window.location="endGame.html";
+        }
+        }, 100);
+
+        document.addEventListener("keydown",(e)=>{
+            if(e.keyCode==32)
             {
-                move+=6; 
-            }
-            else if(GameInstance.SaveData.difficultyLevel=="easy")
-            {
-                move+=1;
-            }
-            GameInstance.SaveData.allienOffset=move;
-
-                if(gameMapUI.allien[0].getBoundingClientRect().y>=window.innerHeight-(gameMapUI.cannon.clientHeight+gameMapUI.allien[0].offsetWidth))//client y=spacecraft pix+cannonsize
+                if(gameMapUI.checkBulletAmt()<1)
                 {
-                    //todo reset game on hit with cannon
-                    //! This is where the game starts over as the ships hit the cannon
-                    clearInterval(timer);
+                const bulle= new bullet();
+                bulle.spawnBullet();
+                GameInstance.TrackBullet(); //*check bullet location peridocilly 
                 }
-            }, 100);
-
-            document.addEventListener("keydown",(e)=>{
-                if(e.keyCode==32)
-                {
-                   if(gameMapUI.checkBulletAmt()<1)
-                   {
-                    const bulle= new bullet();
-                    bulle.spawnBullet();
-                    GameInstance.TrackBullet(); //*check bullet location peridocilly 
-                   }
-                     
-                }
-            });
+            }
+        });
         
         document.addEventListener("keydown",(e)=>{//move cannon
             //* Move the cannon to the left and right using arrows and a touch type interface for mobile
@@ -174,11 +178,11 @@ const app=
 
         gameMapUI.shoot.addEventListener("click",()=>{
             if(gameMapUI.checkBulletAmt()<1)
-                   {
-                    const bulle= new bullet();
-                    bulle.spawnBullet();
-                    GameInstance.TrackBullet(); //*check bullet location peridocilly 
-                   }
+            {
+                const bulle= new bullet();
+                bulle.spawnBullet();
+                GameInstance.TrackBullet(); //*check bullet location peridocilly 
+            }
         });
         gameMapUI.left.addEventListener("click",()=>{
             if(this.convertPX(gameMapUI.cannon.style.marginLeft)>=0)
@@ -202,6 +206,10 @@ const app=
 
 
  
+    },
+    endScrn()
+    {
+        end.populate();
     },
     resizeComponents()
     {
