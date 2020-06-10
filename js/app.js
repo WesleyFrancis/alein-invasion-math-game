@@ -246,8 +246,9 @@ const app=
 
 
         }
-        else// todo: resize the spacecrat on desktop
+        else
         {
+            // todo: resize the spacecrat on desktop
             allienSize=containerWIdth/5-120;
             gameMapUI.allien.forEach((rr)=>{
                 rr.style.width=`${allienSize}px`;
@@ -260,9 +261,7 @@ const app=
             left.style.display="none";
             right.style.display="none";
         }
-
     }
-  
 }
 
 app.init();
