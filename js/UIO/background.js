@@ -16,15 +16,15 @@ const background={
             this.createAudio();
        }
         const audio=this.background.querySelector("audio");
-       if(isplaying)
+        if(isplaying)
         {
             audio.load();
             audio.play();
             mute.setAttribute("src","../images/sound.png");
             GameInstance.SaveData.isAudioPlaying=true;
         }
-        else{
-
+        else
+        {
             audio.pause();
             mute.setAttribute("src","../images/mute.png");
             GameInstance.SaveData.isAudioPlaying=false;

@@ -1,4 +1,10 @@
 // param myParam----------------import stuff--------------
+// todo: sounds for spaceship 
+// todo: to close on desktop version
+// todo: make background loop
+// todo: make cannon move to location and shoot the answer on mobile.
+
+
 import StartScreenUI from "./UIO/startScreen.js";
 import BackgroundUI from "./UIO/background.js";
 import playerData from "./DAO/playerData.js";
@@ -215,7 +221,7 @@ const app=
     {
         // !fetch the size of the screen and dynamicaly update the size of the image for the allien
         const containerWIdth=gameMapUI.gameContainer.clientWidth;
-        const allienSize=containerWIdth/5-10;
+        let allienSize=containerWIdth/5-10;
         gameMapUI.allien.forEach((rr)=>{
             rr.style.width=`${allienSize}px`;
             rr.style.height=`${allienSize}px`;
@@ -242,7 +248,16 @@ const app=
 
 
         }
-        else{
+        else// todo: resize the spacecrat on desktop
+        {
+            allienSize=containerWIdth/5-120;
+            gameMapUI.allien.forEach((rr)=>{
+                rr.style.width=`${allienSize}px`;
+                rr.style.height=`${allienSize}px`;
+            },);
+            gameMapUI.cannon.style.width=`${allienSize*1.2}px`;
+            gameMapUI.cannon.style.height=`${allienSize*1.2}px`;
+
             shoot.style.display="none";
             left.style.display="none";
             right.style.display="none";
