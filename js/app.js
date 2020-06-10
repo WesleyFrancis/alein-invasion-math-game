@@ -1,7 +1,5 @@
 // param myParam----------------import stuff--------------
-// todo: sounds for spaceship 
-// todo: to close on desktop version
-// todo: make background loop
+// todo: sounds for spaceship
 // todo: make cannon move to location and shoot the answer on mobile.
 
 

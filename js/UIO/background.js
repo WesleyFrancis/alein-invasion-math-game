@@ -20,6 +20,7 @@ const background={
         {
             audio.load();
             audio.play();
+            audio.loop=true;
             mute.setAttribute("src","../images/sound.png");
             GameInstance.SaveData.isAudioPlaying=true;
         }
