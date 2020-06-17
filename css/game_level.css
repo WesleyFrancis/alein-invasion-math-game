@@ -34,8 +34,9 @@
     
 } 
 .allien{
-    background-image: url("../images/alien.png");
-    background-size: cover;
+    /* background-image: url("../images/alien.png"); */
+    background-image: url("../images/alien1.png");
+    background-size: contain;
     background-repeat: no-repeat;
     font-size: .5em;
     font-weight: 500;
