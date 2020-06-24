@@ -127,10 +127,9 @@ const GameInstance ={
                 if(this.CheckIfColliding())//@ increment hit/miss restart game etc.
                 {
                     clearInterval(checker);
-                    gameUI.deleteBullet();
-                   //? background.playhut(); would be used to play audio
-
                     
+                    background.spawnExplode(gameUI.bulletRec());
+                   gameUI.deleteBullet();                    
                 }
             },100);
         }
@@ -182,6 +181,7 @@ const GameInstance ={
         {
           //  console.log(`OffsetTop:${gameUI.getBulletLocation()} Ship:${Ship}`);
             background.playExplosion();
+           
             if(question.CheckIfCorrect(Ship))
             {
                 //@ reset spaceships to the top and create new question

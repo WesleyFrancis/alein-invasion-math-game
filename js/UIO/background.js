@@ -106,6 +106,27 @@ const background={
     }
     
 
-   }
+   },
+   spawnExplode(location)
+    {
+        var image = new Image();
+        image.src = "../images/explosion.gif";
+
+        const explodeer = document.createElement("img");
+        explodeer.setAttribute("id","exploder");
+        explodeer.setAttribute("src",image.src);
+        // explodeer.style.display="absolute";
+        // explodeer.style.backgroundImage="url(../images/explosion.gif)";
+        explodeer.style.marginLeft = `${location.x}px`;
+        explodeer.style.marginTop = `${-80}px`;
+        explodeer.style.width = `${80}px`;//todo use a % of allien with for explosion for dynamic
+        explodeer.style.height = `${80}px`;//todo use a % of allien with for explosion for dynamic
+        explodeer.style.zIndex = 300;
+        document.querySelector("#gameMap").appendChild(explodeer);
+        // console.log(location);
+        setTimeout(()=>{
+            explodeer.remove();
+        },4920)
+    }
 }
 export default background;

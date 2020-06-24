@@ -146,6 +146,14 @@ const level={
     updateTimmer(time)
     {
         this.timmer.innerHTML= time;
+    },
+    spawnImg(location)
+    {
+        console.log(location);
+    },
+    bulletRec()
+    {
+        return document.querySelector("#bullet").getBoundingClientRect();
     }
 
 }

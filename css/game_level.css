@@ -98,3 +98,9 @@
     opacity: .2;
     display: none;
 }
+#exploder{
+    position: absolute;
+    /* background-image: url("../images/explosion.gif"); */
+    background-size: cover;
+    background-blend-mode: screen;
+}

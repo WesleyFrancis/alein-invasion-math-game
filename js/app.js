@@ -280,11 +280,11 @@ const app=
             // left.style.display="initial";
             // right.style.display="initial";
 
-            const cent= containerWIdth/2 -50;
-            const marg =containerWIdth-100;
+            // const cent= containerWIdth/2 -50;
+            // const marg =containerWIdth-100;
             
-            right.style.marginLeft=`${marg}px`;
-            shoot.style.marginLeft=`${cent}px`;
+            // right.style.marginLeft=`${marg}px`;
+            // shoot.style.marginLeft=`${cent}px`;
 
 
         }
@@ -301,7 +301,7 @@ const app=
         else
         {
             // todo: resize the spacecrat on desktop
-            allienSize=containerWIdth/5-120;
+            allienSize=containerWIdth/5-600;
             gameMapUI.allien.forEach((rr)=>{
                 rr.style.width=`${allienSize}px`;
                 rr.style.height=`${allienSize}px`;
@@ -309,9 +309,9 @@ const app=
             gameMapUI.cannon.style.width=`${allienSize*1.2}px`;
             gameMapUI.cannon.style.height=`${allienSize*1.2}px`;
 
-            shoot.style.display="none";
-            left.style.display="none";
-            right.style.display="none";
+            // shoot.style.display="none";
+            // left.style.display="none";
+            // right.style.display="none";
         }
     }
 }
