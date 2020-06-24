@@ -45,6 +45,7 @@
     align-self: end;
     font-size: .5em;
     font-weight: 900;
+    /* border: 1px solid #fff; */
 }
 .bullet{
     width:50px;

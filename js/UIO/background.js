@@ -54,6 +54,58 @@ const background={
             this.updateAudio(true);
            GameInstance.SaveData.isAudioPlaying=true;
        }
+   },
+   playShoot(){
+
+    if(document.querySelector("#shootSound")==null)
+    {
+        const aud=document.createElement("audio");
+        aud.setAttribute("id","shootSound");
+        const audSrc=document.createElement("source");
+        audSrc.setAttribute("src","../audio/Future Weapons 2.mp3");
+        audSrc.setAttribute("type","audio/mp3");
+        
+        aud.appendChild(audSrc);
+        this.background.appendChild(aud);
+        if(GameInstance.SaveData.isAudioPlaying==true)
+        {
+            document.querySelector("#shootSound").play();
+        }
+    }
+    else{
+
+        if(GameInstance.SaveData.isAudioPlaying==true)
+        {
+            document.querySelector("#shootSound").play();
+        }
+    }
+   },
+   playExplosion()
+   {
+    if(document.querySelector("#expSound")==null)
+    {
+        const aud=document.createElement("audio");
+        aud.setAttribute("id","expSound");
+        const audSrc=document.createElement("source");
+        audSrc.setAttribute("src","../audio/Grenade explosion.mp3");
+        audSrc.setAttribute("type","audio/mp3");
+        
+        aud.appendChild(audSrc);
+        this.background.appendChild(aud);
+        if(GameInstance.SaveData.isAudioPlaying==true)
+        {
+            document.querySelector("#expSound").play();
+        }
+    }
+    else{
+
+        if(GameInstance.SaveData.isAudioPlaying==true)
+        {
+            document.querySelector("#expSound").play();
+        }
+    }
+    
+
    }
 }
 export default background;

@@ -122,7 +122,7 @@ const app=
 
         if(GameInstance.SaveData.difficultyLevel=="hard")
         {
-            move+=6; 
+            move+=3; 
         }
         else if(GameInstance.SaveData.difficultyLevel=="easy")
         {
@@ -132,6 +132,7 @@ const app=
 
         if(gameMapUI.allien[0].getBoundingClientRect().y>=window.innerHeight-(gameMapUI.cannon.clientHeight+gameMapUI.allien[0].offsetWidth))//client y=spacecraft pix+cannonsize
         {
+            //! Temp removed
             clearInterval(timer);
             GameInstance.init();
             window.location="endGame.html";
@@ -208,8 +209,49 @@ const app=
                 }
         });
 
+        //@ ***************** CLICK TO MOVE CANNON CAPABLITY *****************
+            gameMapUI.playingField.addEventListener("click",(evt)=>{
+            const xlocation =evt.clientX;
+            let cannonLoc= GameInstance.SaveData.cannonLocation;//gameMapUI.cannon.style.marginLeft.slice(0,-2);
+            cannonLoc=parseFloat(cannonLoc);
+            let canonWID=gameMapUI.cannon.style.width.slice(0,-2);
+            canonWID=parseFloat(canonWID);
+            canonWID=canonWID/2;
+            
+            console.log(`xlocation:${xlocation} canonWID:${canonWID} cannonLoc:${cannonLoc}`)
 
- 
+            if(xlocation-canonWID>=cannonLoc)
+            {
+                let mover=setInterval(()=>{
+                    cannonLoc+=10;
+                    gameMapUI.moveCannon(cannonLoc)
+                    if(xlocation-canonWID<=cannonLoc)
+                    {
+                        gameMapUI.moveCannon(xlocation-canonWID);//todo minus cannon width div 2
+                        GameInstance.SaveData.cannonLocation=xlocation-canonWID;
+                        gameMapUI.CreateBullet();
+                        GameInstance.TrackBullet();
+                        clearInterval(mover);
+                    }
+                },50);
+            }
+            else
+            {
+                let moveer=setInterval(()=>{
+                    cannonLoc-=10;
+                    gameMapUI.moveCannon(cannonLoc)
+                    if(xlocation>=cannonLoc)
+                    {
+                        gameMapUI.moveCannon(xlocation-canonWID);//todo minus cannon width div 2
+                       GameInstance.SaveData.cannonLocation=xlocation-canonWID;
+                        gameMapUI.CreateBullet();
+                        GameInstance.TrackBullet();
+                        clearInterval(moveer);
+                    }
+                },50);
+            } 
+        });
+    //@ ***************** CLICK TO MOVE CANNON CAPABLITY *****************
     },
     endScrn()
     {
@@ -234,9 +276,9 @@ const app=
         if(containerWIdth<=768)
         {
 
-            shoot.style.display="initial";
-            left.style.display="initial";
-            right.style.display="initial";
+            // shoot.style.display="initial";
+            // left.style.display="initial";
+            // right.style.display="initial";
 
             const cent= containerWIdth/2 -50;
             const marg =containerWIdth-100;
@@ -245,6 +287,16 @@ const app=
             shoot.style.marginLeft=`${cent}px`;
 
 
+        }
+        else if(containerWIdth>768 && containerWIdth<=1200)
+        {
+            allienSize=containerWIdth/5-12;
+            gameMapUI.allien.forEach((rr)=>{
+                rr.style.width=`${allienSize}px`;
+                rr.style.height=`${allienSize}px`;
+            },);
+            gameMapUI.cannon.style.width=`${allienSize*1.2}px`;
+            gameMapUI.cannon.style.height=`${allienSize*1.2}px`;
         }
         else
         {

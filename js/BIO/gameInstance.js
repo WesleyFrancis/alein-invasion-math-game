@@ -29,6 +29,7 @@ const GameInstance ={
         if(gameMap!=null)
         {
             this.SaveData.timeRemaining=gameUI.timmer.innerHTML;
+            this.cannonLocation = gameUI.cannon.getBoundingClientRect().left;
         }
         this.SaveData.playerName=this.getSaved().playerName;
         this.SaveData.difficultyLevel=this.getLevel();
@@ -48,7 +49,7 @@ const GameInstance ={
         {
             this.StartLevel1(90000);
         }
-
+       
     },
     StartLevel1(timeremaining)
     {
@@ -179,11 +180,12 @@ const GameInstance ={
 
         if(gameUI.getBulletLocation()<shipwidth+shipOffsetTop)
         {
-            console.log(`OffsetTop:${gameUI.getBulletLocation()} Ship:${Ship}`);
+          //  console.log(`OffsetTop:${gameUI.getBulletLocation()} Ship:${Ship}`);
+            background.playExplosion();
             if(question.CheckIfCorrect(Ship))
             {
                 //@ reset spaceships to the top and create new question
-                console.log("correct");
+               // console.log("correct");
                 this.SaveData.allienOffset=0; 
                 gameUI.showQuestions();
                 
@@ -191,7 +193,7 @@ const GameInstance ={
             else
             {
                 //@ do stuff here fr correct
-                console.log("Wrong");
+              //  console.log("Wrong");
                 gameUI.showQuestions();
             }
             return true;

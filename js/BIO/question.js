@@ -77,7 +77,7 @@ const Question ={
         let BulletNum=gameUI.cannon.innerHTML;
             BulletNum=parseInt(BulletNum);
 
-        console.log(`yty:${partA} yty:${partB} yuyu:${BulletNum}`);        
+       // console.log(`yty:${partA} yty:${partB} yuyu:${BulletNum}`);        
             
         if(GameInstance.SaveData.currentLevel==0)
         {
@@ -85,13 +85,13 @@ const Question ={
             if(partA+partB==BulletNum)
             {
                 GameInstance.hitted();
-                console.log("hitted");
+           //     console.log("hitted");
                 return true;
             }
             else
             {
                 GameInstance.missed();
-                console.log("missed");
+            //    console.log("missed");
                 return false;
             }
         }
@@ -100,13 +100,13 @@ const Question ={
             if(partA-partB==BulletNum)
             {
                 GameInstance.hitted();
-                console.log("hitted");
+            //    console.log("hitted");
                 return true;
             }
             else
             {
                 GameInstance.missed();
-                console.log("missed");
+            //    console.log("missed");
                 return false;
             }
         }

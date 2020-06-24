@@ -1,6 +1,7 @@
 import Alien from "../BIO/alien.js";
 import GameInstance from "../BIO/gameInstance.js";
 import Question from "../BIO/question.js";
+import background from "./background.js";
 
 const level={
     body:document.querySelector("body"),
@@ -58,6 +59,7 @@ const level={
         this.body.appendChild(bullet);
         this.move();
         GameInstance.SaveData.bulletLocation=location[1]+(this.cannon.offsetWidth/2)-25;//* Set Bullet Location in game instance
+        background.playShoot();
     },
     move()
     {
