@@ -2,7 +2,6 @@
 // todo: sounds for spaceship
 // todo: make cannon move to location and shoot the answer on mobile.
 
-
 import StartScreenUI from "./UIO/startScreen.js";
 import BackgroundUI from "./UIO/background.js";
 import playerData from "./DAO/playerData.js";
@@ -260,8 +259,12 @@ const app=
     resizeComponents()
     {
         // !fetch the size of the screen and dynamicaly update the size of the image for the allien
-        const containerWIdth=gameMapUI.gameContainer.clientWidth;
-        let allienSize=containerWIdth/5-10;
+        let containerWIdth=gameMapUI.gameContainer.clientWidth;
+        let allienSize=containerWIdth/5;
+        
+        if(containerWIdth<=768)
+        {console.log("768");
+            let allienSize=containerWIdth/5-10;
         gameMapUI.allien.forEach((rr)=>{
             rr.style.width=`${allienSize}px`;
             rr.style.height=`${allienSize}px`;
@@ -269,27 +272,11 @@ const app=
         gameMapUI.cannon.style.width=`${allienSize*1.2}px`;
         gameMapUI.cannon.style.height=`${allienSize*1.2}px`;
 
-        const shoot=gameMapUI.shoot;
-        const left=gameMapUI.left;
-        const right=gameMapUI.right;
-
-        if(containerWIdth<=768)
-        {
-
-            // shoot.style.display="initial";
-            // left.style.display="initial";
-            // right.style.display="initial";
-
-            // const cent= containerWIdth/2 -50;
-            // const marg =containerWIdth-100;
-            
-            // right.style.marginLeft=`${marg}px`;
-            // shoot.style.marginLeft=`${cent}px`;
-
 
         }
-        else if(containerWIdth>768 && containerWIdth<=1200)
+        else if(containerWIdth > 768 && containerWIdth<=1000)
         {
+            console.log("1200");
             allienSize=containerWIdth/5-12;
             gameMapUI.allien.forEach((rr)=>{
                 rr.style.width=`${allienSize}px`;
@@ -298,10 +285,11 @@ const app=
             gameMapUI.cannon.style.width=`${allienSize*1.2}px`;
             gameMapUI.cannon.style.height=`${allienSize*1.2}px`;
         }
-        else
+        else if(containerWIdth > 1000)
         {
             // todo: resize the spacecrat on desktop
-            allienSize=containerWIdth/5-600;
+            console.log("1080");
+            allienSize=containerWIdth/5-120;
             gameMapUI.allien.forEach((rr)=>{
                 rr.style.width=`${allienSize}px`;
                 rr.style.height=`${allienSize}px`;

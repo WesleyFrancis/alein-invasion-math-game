@@ -129,7 +129,7 @@ const GameInstance ={
                     clearInterval(checker);
                     
                     background.spawnExplode(gameUI.bulletRec());
-                   gameUI.deleteBullet();                    
+                    gameUI.deleteBullet();                    
                 }
             },100);
         }
